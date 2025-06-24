@@ -2,15 +2,15 @@
 import SearchableLayout from "@/components/searchable-layout";
 import style from "./ index.module.css";
 import { ReactNode } from "react";
-import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetStaticPropsType } from "next";
 import fetchBooks from "@/lib/fetch-books";
 import fetchRandomBooks from "@/lib/fetch-random-books";
 
-// 컴포넌트보다 먼저 실행되어서 컴포넌트에서 필요한 데이터를 불러오는 함수
-// 사전 렌더링 하면서 서버에서 딱 한번만 실행된다. 브라우저에서 실행하지 않는다.
-export const getServerSideProps = async () => {
+// SSG 방식
+export const getStaticProps = async () => {
+  console.log("인덱스 페이지 ");
+
   const [allBooks, recoBooks] = await Promise.all([
     fetchBooks(),
     fetchRandomBooks(),
@@ -28,7 +28,7 @@ export const getServerSideProps = async () => {
 export default function Home({
   allBooks,
   recoBooks,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className={style.container}>
       <section>
